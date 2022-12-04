@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:weather_share/src/screens/profile.dart';
+import 'package:weather_share/src/screens/screens.dart';
+import 'package:weather_share/src/utils/utils.dart';
 
-void main() => runApp(const MaterialApp(
-      home: WeatherShare(),
+void main() => runApp(MaterialApp(
+      title: "WeatherShare",
+      theme: ThemeData(fontFamily: 'Itim'),
+      home: const WeatherShare(),
     ));
 
 class WeatherShare extends StatefulWidget {
@@ -14,29 +17,57 @@ class WeatherShare extends StatefulWidget {
 
 class _WeatherShareState extends State<WeatherShare> {
   int _selectedIndex = 0;
+
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
   void _onItemTapped(int index) {
     setState(() {
-      print(index);
       _selectedIndex = index;
+      pageController.jumpToPage(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: (() {
+          if (_selectedIndex == 2) {
+            return 200.toDouble();
+          } else {
+            return 80.toDouble();
+          }
+        }()),
+        flexibleSpace: Container(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          color: themeColor["primaryBG"],
+          child: (() {
+            if (_selectedIndex == 0) {
+              return const DashboardAppbar();
+            } else if (_selectedIndex == 2) {
+              return const ProfileAppbar();
+            } else {
+              return const NewpostAppbar();
+            }
+          }()),
+        ),
+      ),
       body: SizedBox.expand(
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xff2D143B),
-                Color(0xff161333),
+                Color(themeColor["primaryBG"]?.value ?? 0),
+                Color(themeColor["secondaryBG"]?.value ?? 0),
               ],
             ),
           ),
-          child: Profile(),
+          child: Pages(_onItemTapped, pageController),
         ),
       ),
       bottomNavigationBar: SizedBox(
@@ -66,6 +97,21 @@ class _WeatherShareState extends State<WeatherShare> {
           onTap: _onItemTapped,
         ),
       ),
+    );
+  }
+}
+
+class Pages extends StatelessWidget {
+  Function pageValue;
+  PageController pageController;
+  Pages(this.pageValue, this.pageController, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (value) => pageValue(value),
+      children: <Widget>[Feed(), NewPost(), Profile()],
     );
   }
 }

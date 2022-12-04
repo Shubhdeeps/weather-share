@@ -20,13 +20,7 @@ class _NavContainerState extends State<NavContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      height: 58,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(17),
-        color: themeColor["primaryBG"],
-        boxShadow: [BorderShadow()],
-      ),
+      padding: EdgeInsets.fromLTRB(00, 10, 0, 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
