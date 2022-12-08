@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "994888229101",
+    "project_id": "weather-share-40076",
+    "storage_bucket": "weather-share-40076.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994888229101:android:3d8794fed2c44eb631ece4",
+        "android_client_info": {
+          "package_name": "com.example.weather_share"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994888229101-lkn9toldsm2vrddgjs4gp0a2v8fgqctm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk8NGkDHUwr8R7OepVig-_Yj2EV9ypBSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994888229101-lkn9toldsm2vrddgjs4gp0a2v8fgqctm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "994888229101-1188umj31nhtjhfib9uo8u1rbmb7kut3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.weatherShare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
