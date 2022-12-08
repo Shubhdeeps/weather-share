@@ -6,14 +6,19 @@ export 'profileComponents/statsContainer.dart';
 export 'profileComponents/navContainer.dart';
 export 'profileComponents/statsWeather.dart';
 export 'profileComponents/profileView.dart';
-export 'profileComponents/profileAppbar.dart';
 
 //Dashboard
 export 'dashboardComponents/dashboardAppbar.dart';
-
+export 'dashboardComponents/recentInfo.dart';
 //new post
-export 'newpostComponent/newpostAppbar.dart';
-
+export 'newpostcomponent/newPostContents.dart';
 // Styles
 export 'styles/color.dart';
 export 'styles/borderShadow.dart';
+
+//imagecard
+export 'imageCard/imageCard.dart';
+
+//modal
+export 'modals/userProfileModal.dart';
+export 'modals/sortByModal.dart';

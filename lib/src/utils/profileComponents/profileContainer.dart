@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:weather_share/src/utils/styles/color.dart';
+import '../utils.dart';
 
 class ProfileContainer extends StatelessWidget {
   final String imageURL;
@@ -65,7 +64,23 @@ class ProfileContainer extends StatelessWidget {
                   ),
                 )
               ],
-            )
+            ),
+            Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        userProfileModal(context);
+                      },
+                      icon: const IconTheme(
+                        data: IconThemeData(color: Colors.white60),
+                        child: Icon(Icons.more_vert),
+                      ),
+                    )
+                  ],
+                ))
           ],
         ),
       ),

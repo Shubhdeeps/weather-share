@@ -1,53 +1,48 @@
 import 'package:flutter/material.dart';
 import '../utils.dart';
 
-class NavContainer extends StatefulWidget {
-  const NavContainer({super.key});
-
-  @override
-  State<NavContainer> createState() => _NavContainerState();
-}
-
-class _NavContainerState extends State<NavContainer> {
-  int _btnSelected = 0;
-  void _buttonPress(int num) {
-    setState(() {
-      _btnSelected = num;
-    });
-  }
+class NavContainer extends StatelessWidget {
+  final Function tabChange;
+  final int tab;
+  const NavContainer(this.tabChange, this.tab, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.fromLTRB(00, 10, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              backgroundColor: _btnSelected == 0
-                  ? themeColor["highlighted"]
-                  : themeColor["transparent"],
-            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-            onPressed: () => _buttonPress(0),
-            child: const Text('STATS'),
+          Expanded(
+            flex: 1,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.elliptical(10, 20)),
+                ),
+                backgroundColor: tab == 0
+                    ? const Color.fromARGB(10, 255, 255, 255)
+                    : Colors.transparent,
+              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              onPressed: () => tabChange(0),
+              child: const Text('STATS'),
+            ),
           ),
-          SizedBox(width: 5),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              backgroundColor: _btnSelected == 1
-                  ? themeColor["highlighted"]
-                  : themeColor["transparent"],
-            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-            onPressed: () => _buttonPress(1),
-            child: const Text('SHARED'),
+          Expanded(
+            flex: 1,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.elliptical(10, 20)),
+                ),
+                backgroundColor: tab == 1
+                    ? const Color.fromARGB(10, 255, 255, 255)
+                    : Colors.transparent,
+              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              onPressed: () => tabChange(1),
+              child: const Text('SHARED'),
+            ),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ Map<String, Color> themeColor = {
   "secondaryBG": const Color(0xff161333),
   "primaryFG": const Color.fromRGBO(33, 32, 66, 0.5),
   "secondaryFG": const Color.fromRGBO(33, 32, 66, 1),
+  "popup": const Color(0xff21242),
   "active": const Color(0xffD1306B),
   "active2": const Color(0xff37AFFF),
   "inactive": const Color(0xff9D9D9D),

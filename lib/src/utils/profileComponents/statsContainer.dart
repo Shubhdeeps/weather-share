@@ -13,7 +13,7 @@ class StatsContainer extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
+            begin: Alignment.topRight,
             end: Alignment.bottomCenter,
             colors: [
               Color(themeColor["primaryFG"]?.value ?? 0),

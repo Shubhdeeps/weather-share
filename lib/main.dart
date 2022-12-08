@@ -1,12 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weather_share/src/screens/screens.dart';
 import 'package:weather_share/src/utils/utils.dart';
 
-void main() => runApp(MaterialApp(
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    MaterialApp(
       title: "WeatherShare",
       theme: ThemeData(fontFamily: 'Itim'),
       home: const WeatherShare(),
-    ));
+    ),
+  );
+}
 
 class WeatherShare extends StatefulWidget {
   const WeatherShare({super.key});
@@ -17,7 +29,7 @@ class WeatherShare extends StatefulWidget {
 
 class _WeatherShareState extends State<WeatherShare> {
   int _selectedIndex = 0;
-
+  int weatherType = 0;
   PageController pageController = PageController(
     initialPage: 0,
     keepPage: true,
@@ -30,29 +42,35 @@ class _WeatherShareState extends State<WeatherShare> {
     });
   }
 
+  void selectWeatherType(int number) {
+    // sunny = 1, cloudy = 2, snowy = 3, rainy = 4, clear = 5
+    setState(() {
+      weatherType = number;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: (() {
-          if (_selectedIndex == 2) {
-            return 200.toDouble();
-          } else {
-            return 80.toDouble();
-          }
-        }()),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          // Status bar color
+          statusBarColor: themeColor["primaryBG"],
+        ),
+        toolbarHeight: 80,
         flexibleSpace: Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           color: themeColor["primaryBG"],
-          child: (() {
-            if (_selectedIndex == 0) {
-              return const DashboardAppbar();
-            } else if (_selectedIndex == 2) {
-              return const ProfileAppbar();
-            } else {
-              return const NewpostAppbar();
-            }
-          }()),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              SizedBox(height: 50),
+              Text(
+                "Weather share",
+                style: TextStyle(color: Colors.white, fontSize: 32),
+              ),
+            ],
+          ),
         ),
       ),
       body: SizedBox.expand(
@@ -67,7 +85,8 @@ class _WeatherShareState extends State<WeatherShare> {
               ],
             ),
           ),
-          child: Pages(_onItemTapped, pageController),
+          child: Pages(
+              _onItemTapped, selectWeatherType, pageController, weatherType),
         ),
       ),
       bottomNavigationBar: SizedBox(
@@ -103,15 +122,23 @@ class _WeatherShareState extends State<WeatherShare> {
 
 class Pages extends StatelessWidget {
   Function pageValue;
+  Function selectWeatherType;
   PageController pageController;
-  Pages(this.pageValue, this.pageController, {super.key});
+  int weatherType;
+  Pages(this.pageValue, this.selectWeatherType, this.pageController,
+      this.weatherType,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
       onPageChanged: (value) => pageValue(value),
-      children: <Widget>[Feed(), NewPost(), Profile()],
+      children: <Widget>[
+        Feed(selectWeatherType, weatherType),
+        Newpost(),
+        Profile()
+      ],
     );
   }
 }
