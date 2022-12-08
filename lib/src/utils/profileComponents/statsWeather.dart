@@ -12,8 +12,8 @@ class StatsWeather extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(17),
-        color: themeColor["primaryFG"],
-        boxShadow: [BorderShadow()],
+        color: themeColor["secondaryFG"],
+        // boxShadow: [BorderShadow()],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

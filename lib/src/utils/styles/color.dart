@@ -3,7 +3,7 @@ import 'dart:ui';
 Map<String, Color> themeColor = {
   "primaryBG": const Color(0xff2D143B),
   "secondaryBG": const Color(0xff161333),
-  "primaryFG": const Color.fromRGBO(33, 32, 66, 0.5),
+  "primaryFG": const Color(0xff313060),
   "secondaryFG": const Color.fromRGBO(33, 32, 66, 1),
   "popup": const Color(0xff21242),
   "active": const Color(0xffD1306B),

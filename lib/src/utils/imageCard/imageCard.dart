@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../screens/otherUsersProfile.dart';
 import '../utils.dart';
 
 class ImageCard extends StatelessWidget {
@@ -13,16 +14,18 @@ class ImageCard extends StatelessWidget {
   final int temprature;
   final String location;
   final String weather;
-
-  const ImageCard(
-      {super.key,
-      required this.imageURL,
-      required this.userName,
-      required this.userProfileURL,
-      required this.timeOfPost,
-      required this.temprature,
-      required this.location,
-      required this.weather});
+  final bool isInsideUserProfile;
+  const ImageCard({
+    super.key,
+    required this.imageURL,
+    required this.userName,
+    required this.userProfileURL,
+    required this.timeOfPost,
+    required this.temprature,
+    required this.location,
+    required this.weather,
+    required this.isInsideUserProfile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +87,22 @@ class ImageCard extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(userProfileURL),
-                                radius: 30,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (isInsideUserProfile == false) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const OtherUserProfile()),
+                                    );
+                                  }
+                                  ;
+                                },
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(userProfileURL),
+                                  radius: 30,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 10),

@@ -13,7 +13,7 @@ class StatsContainer extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topRight,
+            begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
               Color(themeColor["primaryFG"]?.value ?? 0),
@@ -21,8 +21,7 @@ class StatsContainer extends StatelessWidget {
             ],
           ),
           borderRadius: BorderRadius.circular(17),
-          color: themeColor["primaryFG"],
-          boxShadow: [BorderShadow()],
+          // boxShadow: [BorderShadow()],
         ),
         child: Row(
           children: [

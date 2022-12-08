@@ -30,6 +30,13 @@ class _NewPostContentsState extends State<NewPostContents> {
 
   Future postImage() async {
     final String url = await uploadPostImageToCloud(pickedImage!);
+    deleteImage();
+  }
+
+  void deleteImage() {
+    setState(() {
+      pickedImage = null;
+    });
   }
 
   void buttonClick() {
@@ -49,9 +56,9 @@ class _NewPostContentsState extends State<NewPostContents> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PostorDeleteButton(
-                    "Delete", buttonClick, themeColor["active2"]!),
+                    "Delete", deleteImage, themeColor["active2"]!),
                 SizedBox(width: 10),
-                PostorDeleteButton("Post", buttonClick, themeColor["active"]!),
+                PostorDeleteButton("Post", postImage, themeColor["active"]!),
               ],
             ),
           )
@@ -61,19 +68,19 @@ class _NewPostContentsState extends State<NewPostContents> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomButtons("Choose a file", Icons.image_outlined, pickImage),
-            const SizedBox(height: 10),
+            const SizedBox(height: 22),
             const Text(
               "Or",
               style: TextStyle(color: Colors.white38, fontSize: 32),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 22),
             CustomButtons("Capture", Icons.camera_alt_outlined, buttonClick),
-            const SizedBox(height: 10),
+            const SizedBox(height: 22),
             const Text(
               "Or",
               style: TextStyle(color: Colors.white38, fontSize: 32),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 22),
             CustomButtons(
                 "Post a random quote", Icons.format_quote_sharp, buttonClick)
           ],
@@ -104,7 +111,7 @@ class CustomButtons extends StatelessWidget {
           btnClick();
         },
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 7, 0, 7),
+          padding: const EdgeInsets.fromLTRB(10, 12, 0, 12),
           child: Row(children: [
             Icon(icon),
             const SizedBox(width: 10),

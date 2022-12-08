@@ -14,35 +14,33 @@ class NavContainer extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 1,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.elliptical(10, 20)),
-                ),
-                backgroundColor: tab == 0
-                    ? const Color.fromARGB(10, 255, 255, 255)
-                    : Colors.transparent,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-              onPressed: () => tabChange(0),
-              child: const Text('STATS'),
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              backgroundColor: tab == 0
+                  ? const Color.fromARGB(10, 255, 255, 255)
+                  : Colors.transparent,
+            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+            onPressed: () => tabChange(0),
+            child: const Padding(
+                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                child: Text('SHARED')),
           ),
-          Expanded(
-            flex: 1,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.elliptical(10, 20)),
-                ),
-                backgroundColor: tab == 1
-                    ? const Color.fromARGB(10, 255, 255, 255)
-                    : Colors.transparent,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-              onPressed: () => tabChange(1),
-              child: const Text('SHARED'),
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              backgroundColor: tab == 1
+                  ? const Color.fromARGB(10, 255, 255, 255)
+                  : Colors.transparent,
+            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+            onPressed: () => tabChange(1),
+            child: const Padding(
+                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                child: Text('STATS')),
           ),
         ],
       ),
