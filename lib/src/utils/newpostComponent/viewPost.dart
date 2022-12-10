@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ViewPost extends StatelessWidget {
-  final PlatformFile? pickedImage;
+  final File pickedImage;
   const ViewPost(this.pickedImage, {super.key});
 
   @override

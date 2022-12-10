@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:weather_share/src/services/cloud/uploadImageToStorage.dart';
 import 'package:weather_share/src/utils/newpostComponent/viewPost.dart';
 import 'package:weather_share/src/utils/styles/color.dart';
@@ -17,17 +18,32 @@ class NewPostContents extends StatefulWidget {
 }
 
 class _NewPostContentsState extends State<NewPostContents> {
-  PlatformFile? pickedImage;
+  File? pickedImage;
 
-  Future pickImage() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowMultiple: false,
-      allowedExtensions: ['jpg', 'jpeg', 'png'],
+  Future pickGalleryImage() async {
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    if (pickedFile == null) return null;
+    final file = File(pickedFile.path);
+    cropImage(file);
+  }
+
+  Future pickCameraImage() async {
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    if (pickedFile == null) return null;
+    final file = File(pickedFile.path);
+    cropImage(file);
+  }
+
+  Future<void> cropImage(File file) async {
+    final image = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1.1, ratioY: 1),
+      compressQuality: 10,
     );
-    if (result == null) return;
+    File imgFile = File(image!.path!);
     setState(() {
-      pickedImage = result.files.first;
+      pickedImage = imgFile;
     });
   }
 
@@ -64,7 +80,7 @@ class _NewPostContentsState extends State<NewPostContents> {
         child: (() {
       if (pickedImage != null) {
         return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ViewPost(pickedImage),
+          ViewPost(pickedImage!),
           Padding(
             padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -82,14 +98,16 @@ class _NewPostContentsState extends State<NewPostContents> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomButtons("Choose a file", Icons.image_outlined, pickImage),
+            CustomButtons(
+                "Choose a file", Icons.image_outlined, pickGalleryImage),
             const SizedBox(height: 22),
             const Text(
               "Or",
               style: TextStyle(color: Colors.white38, fontSize: 32),
             ),
             const SizedBox(height: 22),
-            CustomButtons("Capture", Icons.camera_alt_outlined, buttonClick),
+            CustomButtons(
+                "Capture", Icons.camera_alt_outlined, pickCameraImage),
             const SizedBox(height: 22),
             const Text(
               "Or",

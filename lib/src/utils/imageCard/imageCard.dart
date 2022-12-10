@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../screens/otherUsersProfile.dart';
+import '../../services/logical/weatherCodeToIcon.dart';
 import '../utils.dart';
 
 class ImageCard extends StatelessWidget {
@@ -175,7 +176,7 @@ class WeatherInfo extends StatelessWidget {
           ],
         ),
         SvgPicture.asset(
-          "assets/weather/cloudy.svg",
+          weatherCodes[2]!,
           height: 38,
         )
       ],
