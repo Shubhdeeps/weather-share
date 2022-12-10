@@ -18,9 +18,9 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   late List<Post> _posts = [];
-  late bool _isLoading = false;
   late String _error = "";
   final controller = ScrollController();
+  bool hasMore = true;
   @override
   void initState() {
     super.initState();
@@ -34,20 +34,28 @@ class _FeedState extends State<Feed> {
 
   Future<void> getFeedData() async {
     try {
+      final fetchedPosts =
+          await widget.getAllPosts(_posts.length) as List<Post>;
       setState(() {
-        _isLoading = true;
-      });
-      final fetchedPosts = await widget.getAllPosts(_posts.length);
-      setState(() {
-        _posts = fetchedPosts;
-        _isLoading = false;
+        _posts.addAll(fetchedPosts);
+
+        // if fetched posts are less then the amount of posts that supposed to be fetched (AMOUNT_T0_BE_FETCHED)
+        if (fetchedPosts.length < 2) {
+          hasMore = false;
+        }
       });
     } catch (e) {
+      print(e);
       setState(() {
         _error = "Something went wrong!";
-        _isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,41 +66,47 @@ class _FeedState extends State<Feed> {
       showChildOpacityTransition: true,
       springAnimationDurationInMilliseconds: 50,
       onRefresh: getFeedData,
-      child: ListView(
+      child: ListView.builder(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         controller: controller,
-        children: [
-          Container(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-              child: RecentInfo(widget.selectWeatherType, widget.weatherType)),
-          const SizedBox(
-            height: 20,
-          ),
-          (() {
-            if (_error.isNotEmpty) {
-              return Center(
-                child: Text(
-                  _error,
-                  style: TextStyle(color: Colors.white, fontSize: 22),
-                ),
-              );
-            }
-            if (_isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return Column(
-              children: <Widget>[..._posts.map((e) => e.getPostContainer())],
+        itemCount: _posts.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          print("index: $index");
+          if (_error.isNotEmpty) {
+            return Center(
+              child: Text(
+                _error,
+                style: const TextStyle(color: Colors.white, fontSize: 22),
+              ),
             );
-          }()),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+          }
+          if (index < _posts.length) {
+            final item = _posts[index];
+            return item.getPostContainer();
+          } else {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
+              child: Center(
+                child: hasMore
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        "No more posts to load!",
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
 }
+
+
+  //  Container(
+  //               padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+  //               child: RecentInfo(widget.selectWeatherType, widget.weatherType),
+  //             ),
 
 
 //           FutureBuilder(

@@ -42,11 +42,30 @@ Future<List<Post>> fetchAllPosts(int lastVisibleItemNumber) async {
       .limit(AMOUNT_TO_BE_FETCHED + lastVisibleItemNumber);
 
   final data = await dataRef.get() as QuerySnapshot<Map<String, dynamic>>;
-  final posts = data.docs.map((doc) => doc.data());
-  final usersIds = posts.map((eachPost) => eachPost["uid"]).toList();
+  final posts = data.docs.map((doc) => doc.data()).toList();
+  // remove already fetched items
+  // print("Post length: ${posts.length}");
+  // print("lastVisible number $lastVisibleItemNumber");
+  // for (var i = 0; i < lastVisibleItemNumber; i++) {
+  //   print("i: $i");
+  //   posts.removeAt(i);
+  // }
+
+  // print("post length after remove: ${posts.length}");
+  // if (posts.isEmpty) {
+  //   return [];
+  // }
+
+  // [0,1,2,3]
+  // last = 2
+  // len = 4
+  // from 2 [2, 3]
+  late final postSublist = posts.sublist(lastVisibleItemNumber);
+  print(postSublist.length);
+  final usersIds = postSublist.map((eachPost) => eachPost["uid"]).toList();
   if (usersIds.isNotEmpty) {
     final users = await getAllUsersOfGivenUidList(usersIds);
-    for (final post in posts) {
+    for (final post in postSublist) {
       final userOfCurrentPost =
           users.firstWhere((element) => element.uid == post["uid"]);
       Post newPost = Post(
