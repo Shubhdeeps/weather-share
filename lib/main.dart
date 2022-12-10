@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather_share/src/models/models.dart';
 import 'package:weather_share/src/screens/screens.dart';
 import 'package:weather_share/src/utils/utils.dart';
 
 import 'firebase_options.dart';
+import 'src/services/cloud/getAllPosts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +51,11 @@ class _WeatherShareState extends State<WeatherShare> {
     });
   }
 
+  Future<List<Post>> getAllPosts(int totalPosts) async {
+    final fetchedPosts = await fetchAllPosts(totalPosts);
+    return fetchedPosts;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,8 +92,8 @@ class _WeatherShareState extends State<WeatherShare> {
               ],
             ),
           ),
-          child: Pages(
-              _onItemTapped, selectWeatherType, pageController, weatherType),
+          child: Pages(_onItemTapped, selectWeatherType, pageController,
+              weatherType, getAllPosts),
         ),
       ),
       bottomNavigationBar: SizedBox(
@@ -125,8 +132,9 @@ class Pages extends StatelessWidget {
   Function selectWeatherType;
   PageController pageController;
   int weatherType;
+  Function getAllPosts;
   Pages(this.pageValue, this.selectWeatherType, this.pageController,
-      this.weatherType,
+      this.weatherType, this.getAllPosts,
       {super.key});
 
   @override
@@ -135,7 +143,7 @@ class Pages extends StatelessWidget {
       controller: pageController,
       onPageChanged: (value) => pageValue(value),
       children: <Widget>[
-        Feed(selectWeatherType, weatherType),
+        Feed(selectWeatherType, weatherType, getAllPosts),
         Newpost(),
         Profile()
       ],

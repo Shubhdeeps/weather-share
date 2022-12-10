@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_share/src/services/cloud/uploadImageToStorage.dart';
 import 'package:weather_share/src/utils/newpostComponent/viewPost.dart';
 import 'package:weather_share/src/utils/styles/color.dart';
+
+import '../../services/firebaseConfig.dart';
 
 class NewPostContents extends StatefulWidget {
   NewPostContents({super.key});
@@ -30,6 +33,18 @@ class _NewPostContentsState extends State<NewPostContents> {
 
   Future postImage() async {
     final String url = await uploadPostImageToCloud(pickedImage!);
+    Map<String, dynamic> newPost = {
+      "created": Timestamp.now(),
+      "imageURL": url,
+      "uid": "tester-author",
+      "lat": 59.43,
+      "lon": 24.75,
+      "location": "Tallinn",
+      "temperature": -5,
+      "type": "POST",
+      "weather_code": 2,
+    };
+    await userPostRef.add(newPost);
     deleteImage();
   }
 

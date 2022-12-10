@@ -4,16 +4,16 @@ class User {
   final String uid;
   late final String profileURL;
 
-  User(this.username, this.fullName, this.uid, this.profileURL);
+  User(this.username, this.uid, this.profileURL);
 
-  Map<String, String> getUser() {
-    return {
-      "username": username,
-      "fullName": fullName,
-      "uid": uid,
-      "profileURL": profileURL
-    };
-  }
+  static User fromJson(Map<String, dynamic> json) => User(
+        json["username"],
+        json["uid"],
+        json["profileURL"],
+      );
+
+  Map<String, dynamic> toJson() =>
+      {"usernname": username, "uid": uid, "profileURL": profileURL};
 
   void updateUser(Map<String, String> user) {
     fullName = user["fullName"]!;

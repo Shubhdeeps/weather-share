@@ -100,7 +100,10 @@ class ImageCard extends StatelessWidget {
                                   ;
                                 },
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(userProfileURL),
+                                  backgroundImage: NetworkImage(userProfileURL
+                                          .isEmpty
+                                      ? "https://firebasestorage.googleapis.com/v0/b/weather-share-40076.appspot.com/o/profileImages%2Fempty%20pfp.png?alt=media&token=3d2b6f5b-0f5e-4c0f-82a7-9de3bcacdfae"
+                                      : userProfileURL),
                                   radius: 30,
                                 ),
                               ),

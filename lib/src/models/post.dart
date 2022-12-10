@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import '../utils/imageCard/imageCard.dart';
 import 'models.dart';
 
@@ -6,13 +8,12 @@ class Post {
   final String imageURL;
   final int temperature;
   final String location;
-  final String weather_code;
-  final DateTime created;
-  final int lat;
-  final int lon;
+  final int weather_code;
+  final Timestamp created;
+  final double lat;
+  final double lon;
   final String type;
-  late bool isInsideUserProfile;
-  late User user;
+  final User user;
   Post(
     this.uid,
     this.imageURL,
@@ -23,6 +24,7 @@ class Post {
     this.lat,
     this.lon,
     this.type,
+    this.user,
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,20 +39,35 @@ class Post {
         "type": type,
       };
 
-  setUser(User user) {
-    this.user = user;
-  }
+  // setUser(User user) {
+  //   this.user = user;
+  // }
 
   getPostContainer() {
-    return ImageCard(
-      imageURL: imageURL,
-      userName: user.username,
-      userProfileURL: user.profileURL,
-      timeOfPost: 13,
-      temprature: temperature,
-      location: location,
-      weather: "Snowy",
-      isInsideUserProfile: isInsideUserProfile,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+      child: ImageCard(
+        imageURL: imageURL,
+        userName: user.username,
+        userProfileURL: user.profileURL,
+        timeOfPost: 13,
+        temprature: temperature,
+        location: location,
+        weather: "Snowy",
+        isInsideUserProfile: false,
+      ),
     );
   }
+
+  // static Post fromJson(Map<String, dynamic> json) => Post(
+  //       json["uid"],
+  //       json["imageURL"],
+  //       json["temperature"],
+  //       json["location"],
+  //       json["weather_code"],
+  //       json["created"],
+  //       json["lat"],
+  //       json["lon"],
+  //       json["type"],
+  //     );
 }

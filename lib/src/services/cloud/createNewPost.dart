@@ -1,6 +1,7 @@
+import 'package:weather_share/src/services/firebaseConfig.dart';
+
 import '../../models/post.dart';
 
-Future<void> createNewPost(Post post) async {
-  post.toJson();
-  // set this post to firestore
+Future<void> createNewPost(Map<String, dynamic> post) async {
+  userPostRef.add(post);
 }
