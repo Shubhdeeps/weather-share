@@ -34,7 +34,8 @@ import '../firebaseConfig.dart';
 //   return users.toList();
 // }
 
-final int AMOUNT_TO_BE_FETCHED = 2;
+// ignore: constant_identifier_names
+const int AMOUNT_TO_BE_FETCHED = 5;
 Future<List<Post>> fetchAllPosts(int lastVisibleItemNumber) async {
   late final List<Post> postsList = [];
   var dataRef = userPostRef
@@ -43,28 +44,12 @@ Future<List<Post>> fetchAllPosts(int lastVisibleItemNumber) async {
 
   final data = await dataRef.get() as QuerySnapshot<Map<String, dynamic>>;
   final posts = data.docs.map((doc) => doc.data()).toList();
-  // remove already fetched items
-  // print("Post length: ${posts.length}");
-  // print("lastVisible number $lastVisibleItemNumber");
-  // for (var i = 0; i < lastVisibleItemNumber; i++) {
-  //   print("i: $i");
-  //   posts.removeAt(i);
-  // }
-
-  // print("post length after remove: ${posts.length}");
-  // if (posts.isEmpty) {
-  //   return [];
-  // }
-
-  // [0,1,2,3]
-  // last = 2
-  // len = 4
-  // from 2 [2, 3]
   late final postSublist = posts.sublist(lastVisibleItemNumber);
-  print(postSublist.length);
   final usersIds = postSublist.map((eachPost) => eachPost["uid"]).toList();
   if (usersIds.isNotEmpty) {
     final users = await getAllUsersOfGivenUidList(usersIds);
+
+    // loop through posts, and add users data to them
     for (final post in postSublist) {
       final userOfCurrentPost =
           users.firstWhere((element) => element.uid == post["uid"]);

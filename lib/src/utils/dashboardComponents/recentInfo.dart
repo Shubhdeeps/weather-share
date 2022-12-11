@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather_share/src/utils/modals/weatherForcastModal.dart';
 
 import '../utils.dart';
 
 class RecentInfo extends StatelessWidget {
-  Function selectWeatherType;
-  int weatherType;
-  RecentInfo(this.selectWeatherType, this.weatherType, {super.key});
-
-  Map<int, String> weatherMap = {
-    0: "Recent",
-    1: "Sunny",
-    2: "Cloudy",
-    3: "Snowy",
-    4: "Rainy",
-    5: "Clear",
-  };
+  const RecentInfo({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,17 +31,17 @@ class RecentInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              weatherMap[weatherType]!,
+            const Text(
+              "Recent",
               style: TextStyle(color: Colors.white60, fontSize: 18),
             ),
             IconButton(
               onPressed: () {
-                sortByModal(context, selectWeatherType, weatherType);
+                weatherForecaseModal(context);
               },
               icon: const IconTheme(
                 data: IconThemeData(color: Colors.white60),
-                child: Icon(Icons.more_vert),
+                child: Icon(Icons.cloud),
               ),
             )
           ],

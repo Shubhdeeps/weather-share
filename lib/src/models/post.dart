@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:weather_share/src/utils/imageCard/quoteCard.dart';
 import '../utils/imageCard/imageCard.dart';
 import 'models.dart';
 
 class Post {
   final String uid;
   final String imageURL;
-  final int temperature;
+  final num temperature;
   final String location;
-  final int weather_code;
+  final num weather_code;
   final Timestamp created;
-  final double lat;
-  final double lon;
+  final num lat;
+  final num lon;
   final String type;
   final User user;
   Post(
@@ -39,35 +40,52 @@ class Post {
         "type": type,
       };
 
-  // setUser(User user) {
-  //   this.user = user;
-  // }
-
-  getPostContainer() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
-      child: ImageCard(
-        imageURL: imageURL,
-        userName: user.username,
-        userProfileURL: user.profileURL,
-        timeOfPost: 13,
-        temprature: temperature,
-        location: location,
-        weather: "Snowy",
-        isInsideUserProfile: false,
-      ),
-    );
+  String timestampToString(Timestamp time) {
+    final secondsCreatedAT = time.seconds;
+    double timeNow = DateTime.now().millisecondsSinceEpoch / 1000;
+    double seconds = timeNow - secondsCreatedAT;
+    print(seconds);
+    if (seconds < 60) {
+      return "${seconds.round()} secs ago";
+    } else if (seconds < 3600) {
+      return "${(seconds / 60).round()} mins ago";
+    } else if (seconds < 86400) {
+      return "${(seconds / 3600).round()} hrs ago";
+    } else if (seconds > 86400) {
+      return "${(seconds / 86400).round()} days ago";
+    }
+    return "";
   }
 
-  // static Post fromJson(Map<String, dynamic> json) => Post(
-  //       json["uid"],
-  //       json["imageURL"],
-  //       json["temperature"],
-  //       json["location"],
-  //       json["weather_code"],
-  //       json["created"],
-  //       json["lat"],
-  //       json["lon"],
-  //       json["type"],
-  //     );
+  getPostContainer() {
+    if (type == "POST") {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+        child: ImageCard(
+          imageURL: imageURL,
+          userName: user.username,
+          userProfileURL: user.profileURL,
+          timeOfPost: timestampToString(created),
+          temprature: temperature,
+          location: location,
+          weatherCode: weather_code,
+          isInsideUserProfile: false,
+        ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+        child: QuoteCard(
+          quote: imageURL,
+          userName: user.username,
+          userProfileURL: user.profileURL,
+          timeOfPost: timestampToString(created),
+          temprature: temperature,
+          location: location,
+          weatherCode: weather_code,
+          isInsideUserProfile: false,
+        ),
+      );
+    }
+  }
 }

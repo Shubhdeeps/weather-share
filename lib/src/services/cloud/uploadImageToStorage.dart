@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-
 import '../firebaseConfig.dart';
 
 Future<String> uploadPostImageToCloud(File pickedImage) async {
