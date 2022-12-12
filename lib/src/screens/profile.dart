@@ -12,14 +12,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  // int tab = 0;
-
-  // void tabChange(int num) {
-  //   setState(() {
-  //     tab = num;
-  //   });
-  // }
-
   Future<User> getData() async {
     final user = await getUserBasedOnGivenUid(widget.uid);
     return user;

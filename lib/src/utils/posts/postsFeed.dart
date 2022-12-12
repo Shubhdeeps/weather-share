@@ -30,13 +30,28 @@ class PostFeed extends StatelessWidget {
               ),
             );
           }
+          if (posts.length == 0) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Column(children: [
+                child!,
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "No posts yet!",
+                  style: TextStyle(color: Colors.white, fontSize: 28),
+                ),
+              ]),
+            );
+          }
           if (index < posts.length) {
             final item = posts[index];
             if (index == 0) {
               return Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: child,
                   ),
                   item.getPostContainer()

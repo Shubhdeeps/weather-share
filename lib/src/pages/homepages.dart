@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_share/src/services/api/getLocationUsingLatLong.dart';
+import 'package:weather_share/src/services/firebaseConfig.dart';
 import 'package:weather_share/src/utils/utils.dart';
 
 import '../screens/screens.dart';
@@ -9,7 +11,9 @@ import '../services/logical/getDeviceGeoLocation.dart';
 class HomePage extends StatefulWidget {
   Function pageValue;
   PageController pageController;
-  HomePage(this.pageValue, this.pageController, {super.key});
+  final String currentUserId;
+  HomePage(this.pageValue, this.pageController,
+      {super.key, required this.currentUserId});
 
   @override
   State<HomePage> createState() => _HomePage();
@@ -19,6 +23,12 @@ class _HomePage extends State<HomePage> {
   Future<Position> currentUserPosition() async {
     try {
       final location = await getCurrentLocation();
+      // update the user location every time he opens the application.
+      final userCurrentLocation = await getUserLocationUsingLatLong(
+          location.latitude, location.longitude);
+      profileRef.doc(widget.currentUserId).update({
+        "location": userCurrentLocation["address"]["city"],
+      });
       return location;
     } catch (e) {
       return Future.error(e.toString());
@@ -65,8 +75,10 @@ class _HomePage extends State<HomePage> {
             onPageChanged: (value) => widget.pageValue(value),
             children: <Widget>[
               Feed(currentUserPosition: snapshot.data!, null),
-              Newpost(currentUserPosition: snapshot.data!),
-              Profile(uid: "tester-author")
+              Newpost(
+                  currentUserPosition: snapshot.data!,
+                  currentUserId: widget.currentUserId),
+              Profile(uid: widget.currentUserId)
             ],
           );
         } else if (snapshot.hasError) {
