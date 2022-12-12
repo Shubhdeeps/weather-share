@@ -1,13 +1,11 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:weather_share/src/utils/imageCard/weatherInfo.dart';
-
 import '../../screens/otherUsersProfile.dart';
 import '../utils.dart';
 
-class ImageCard extends StatelessWidget {
-  final String imageURL;
+class QuoteCard extends StatelessWidget {
+  final String quote;
   final String userName;
   final String userProfileURL;
   final String timeOfPost;
@@ -18,9 +16,9 @@ class ImageCard extends StatelessWidget {
   final String authorUid;
   final num lat;
   final num long;
-  const ImageCard({
+  const QuoteCard({
     super.key,
-    required this.imageURL,
+    required this.quote,
     required this.userName,
     required this.userProfileURL,
     required this.timeOfPost,
@@ -32,7 +30,6 @@ class ImageCard extends StatelessWidget {
     required this.lat,
     required this.long,
   });
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -75,12 +72,40 @@ class ImageCard extends StatelessWidget {
                           bottomLeft: Radius.circular(0),
                           bottomRight: Radius.circular(0),
                           topRight: Radius.circular(30)),
-                      child: SizedBox.fromSize(
-                        size:
-                            Size.fromRadius(MediaQuery.of(context).size.width),
-                        child: Image.network(
-                          imageURL,
-                          fit: BoxFit.fill,
+                      child: Container(
+                        color: const Color(0xffEAE5E4),
+                        child: SizedBox.fromSize(
+                          size: Size.fromRadius(
+                            MediaQuery.of(context).size.width,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child: Icon(Icons.format_quote)),
+                                  Text(
+                                    quote.split("-")[0],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: Text(
+                                      "-${quote.split("-").last}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w100),
+                                    ),
+                                  ),
+                                ]),
+                          ),
                         ),
                       ),
                     ),

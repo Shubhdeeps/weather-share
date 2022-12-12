@@ -12,6 +12,8 @@ export 'dashboardComponents/dashboardAppbar.dart';
 export 'dashboardComponents/recentInfo.dart';
 //new post
 export 'newpostcomponent/newPostContents.dart';
+export 'newpostcomponent/viewPost.dart';
+export 'newpostcomponent/viewQuote.dart';
 // Styles
 export 'styles/color.dart';
 export 'styles/borderShadow.dart';

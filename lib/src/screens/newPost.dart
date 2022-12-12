@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_share/src/utils/newpostComponent/newPostContents.dart';
 
 class Newpost extends StatelessWidget {
-  const Newpost({super.key});
+  Position currentUserPosition;
+  Newpost({super.key, required this.currentUserPosition});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: NewPostContents(),
+      child: NewPostContents(currentUserPosition: currentUserPosition),
     );
   }
 }
