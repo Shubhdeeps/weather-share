@@ -17,6 +17,10 @@ class _ProfileState extends State<Profile> {
     return user;
   }
 
+  void reload() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -27,6 +31,7 @@ class _ProfileState extends State<Profile> {
             user: snapshot.data!,
             child: ProfileContainer(
               user: snapshot.data!,
+              reload: reload,
             ),
           );
         }

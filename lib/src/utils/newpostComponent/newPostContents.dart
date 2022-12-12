@@ -113,7 +113,8 @@ class _NewPostContentsState extends State<NewPostContents> {
 
       late String imageSrc;
       if (isImage) {
-        final String url = await uploadPostImageToCloud(pickedImage!);
+        final String url =
+            await uploadPostImageToCloud(pickedImage!, "userPosts");
         imageSrc = url;
       } else {
         imageSrc = pickedImage;
@@ -197,28 +198,31 @@ class _NewPostContentsState extends State<NewPostContents> {
           )
         ]);
       } else {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomButtons(
-                "Choose a file", Icons.image_outlined, pickGalleryImage),
-            const SizedBox(height: 22),
-            const Text(
-              "Or",
-              style: TextStyle(color: Colors.white38, fontSize: 32),
-            ),
-            const SizedBox(height: 22),
-            CustomButtons(
-                "Capture", Icons.camera_alt_outlined, pickCameraImage),
-            const SizedBox(height: 22),
-            const Text(
-              "Or",
-              style: TextStyle(color: Colors.white38, fontSize: 32),
-            ),
-            const SizedBox(height: 22),
-            CustomButtons(
-                "Post a random quote", Icons.format_quote_sharp, generateQuote)
-          ],
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomButtons(
+                  "Choose a file", Icons.image_outlined, pickGalleryImage),
+              const SizedBox(height: 22),
+              const Text(
+                "Or",
+                style: TextStyle(color: Colors.white38, fontSize: 32),
+              ),
+              const SizedBox(height: 22),
+              CustomButtons(
+                  "Capture", Icons.camera_alt_outlined, pickCameraImage),
+              const SizedBox(height: 22),
+              const Text(
+                "Or",
+                style: TextStyle(color: Colors.white38, fontSize: 32),
+              ),
+              const SizedBox(height: 22),
+              CustomButtons("Post a random quote", Icons.format_quote_sharp,
+                  generateQuote)
+            ],
+          ),
         );
       }
     }()));
@@ -238,7 +242,7 @@ class CustomButtons extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
-        backgroundColor: themeColor["active"],
+        backgroundColor: Colors.white10,
       ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
       onPressed: () {
         btnClick();

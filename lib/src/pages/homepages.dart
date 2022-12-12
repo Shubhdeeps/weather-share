@@ -20,7 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  Future<Position> currentUserPosition() async {
+  bool firstLoad = true;
+  Future<Position> currentUserPosition(context) async {
     try {
       final location = await getCurrentLocation();
       // update the user location every time he opens the application.
@@ -29,6 +30,13 @@ class _HomePage extends State<HomePage> {
       profileRef.doc(widget.currentUserId).update({
         "location": userCurrentLocation["address"]["city"],
       });
+      if (firstLoad) {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      }
+      setState(() {
+        firstLoad = false;
+      });
+
       return location;
     } catch (e) {
       return Future.error(e.toString());
@@ -64,10 +72,29 @@ class _HomePage extends State<HomePage> {
     );
   }
 
+  AlertDialog ShowLoader() {
+    return AlertDialog(
+      content: Row(
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(
+            width: 40,
+          ),
+          Text(
+            "Loading...",
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      elevation: 24,
+      backgroundColor: themeColor["secondaryFG"],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: currentUserPosition(),
+      future: currentUserPosition(context),
       builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
         if (snapshot.hasData) {
           return PageView(
@@ -93,22 +120,14 @@ class _HomePage extends State<HomePage> {
             child: Text(snapshot.error.toString()),
           );
         } else {
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CircularProgressIndicator(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Fetching location...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ]);
+          Future.delayed(Duration.zero, () {
+            showDialog(
+              context: context,
+              builder: (_) => ShowLoader(),
+              barrierDismissible: false,
+            );
+          });
+          return Container();
         }
       },
     );

@@ -5,9 +5,11 @@ import '../utils.dart';
 
 class ProfileContainer extends StatelessWidget {
   final User user;
+  final Function reload;
   const ProfileContainer({
     super.key,
     required this.user,
+    required this.reload,
   });
 
   @override
@@ -74,7 +76,7 @@ class ProfileContainer extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          userProfileModal(context, user);
+                          userProfileModal(context, user, reload);
                         },
                         icon: const IconTheme(
                           data: IconThemeData(color: Colors.white60),

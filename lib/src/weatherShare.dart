@@ -19,10 +19,12 @@ class _WeatherShareState extends State<WeatherShare> {
     keepPage: true,
   );
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      pageController.jumpToPage(index);
+  Future<void> _onItemTapped(int index) async {
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        _selectedIndex = index;
+        pageController.jumpToPage(index);
+      });
     });
   }
 
