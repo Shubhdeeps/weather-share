@@ -16,7 +16,12 @@ import '../../services/firebaseConfig.dart';
 
 class NewPostContents extends StatefulWidget {
   Position currentUserPosition;
-  NewPostContents({super.key, required this.currentUserPosition});
+  final String currentUserId;
+  NewPostContents({
+    super.key,
+    required this.currentUserPosition,
+    required this.currentUserId,
+  });
 
   @override
   State<NewPostContents> createState() => _NewPostContentsState();
@@ -122,7 +127,7 @@ class _NewPostContentsState extends State<NewPostContents> {
       Map<String, dynamic> newPost = {
         "created": Timestamp.now(),
         "imageURL": imageSrc,
-        "uid": "tester-author",
+        "uid": widget.currentUserId,
         "lat": lat,
         "lon": long,
         "location": location["address"]["city"],

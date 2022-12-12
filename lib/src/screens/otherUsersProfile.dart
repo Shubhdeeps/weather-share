@@ -25,7 +25,16 @@ class OtherUserProfile extends StatelessWidget {
       body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: themeColor["primaryBG"],
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(themeColor["primaryBG"]?.value ?? 0),
+                Color(themeColor["secondaryBG"]?.value ?? 0),
+              ],
+            ),
+          ),
           child: Profile(
             uid: uid,
           )),

@@ -15,24 +15,3 @@ CollectionReference userPostRef =
 
 User? get currentUser => auth.currentUser;
 Stream<User?> get authStateChanges => auth.authStateChanges();
-
-Future<void> signInWithEmailAndPassword({
-  required String email,
-  required String password,
-}) async {
-  await auth.signInWithEmailAndPassword(email: email, password: password);
-}
-
-Future<void> createUserWithEmailAndPassword({
-  required String email,
-  required String password,
-}) async {
-  await auth.createUserWithEmailAndPassword(email: email, password: password);
-}
-
-Future<void> signout({
-  required String email,
-  required String password,
-}) async {
-  await auth.signOut();
-}
