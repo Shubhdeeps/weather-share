@@ -15,6 +15,7 @@ class Post {
   final num lon;
   final String type;
   final User user;
+  final bool isInsideUserProfile;
   Post(
     this.uid,
     this.imageURL,
@@ -26,6 +27,7 @@ class Post {
     this.lon,
     this.type,
     this.user,
+    this.isInsideUserProfile,
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,7 +71,10 @@ class Post {
           temprature: temperature,
           location: location,
           weatherCode: weather_code,
-          isInsideUserProfile: false,
+          isInsideUserProfile: isInsideUserProfile,
+          authorUid: user.uid,
+          lat: lat,
+          long: lon,
         ),
       );
     } else {
@@ -83,7 +88,10 @@ class Post {
           temprature: temperature,
           location: location,
           weatherCode: weather_code,
-          isInsideUserProfile: false,
+          isInsideUserProfile: isInsideUserProfile,
+          authorUid: user.uid,
+          lat: lat,
+          long: lon,
         ),
       );
     }

@@ -1,11 +1,7 @@
-import 'dart:convert';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:weather_share/src/utils/imageCard/weatherInfo.dart';
 import '../../screens/otherUsersProfile.dart';
-import '../../services/logical/weatherCodeToIcon.dart';
 import '../utils.dart';
 
 class QuoteCard extends StatelessWidget {
@@ -17,7 +13,10 @@ class QuoteCard extends StatelessWidget {
   final String location;
   final num weatherCode;
   final bool isInsideUserProfile;
-  QuoteCard({
+  final String authorUid;
+  final num lat;
+  final num long;
+  const QuoteCard({
     super.key,
     required this.quote,
     required this.userName,
@@ -27,6 +26,9 @@ class QuoteCard extends StatelessWidget {
     required this.location,
     required this.weatherCode,
     required this.isInsideUserProfile,
+    required this.authorUid,
+    required this.lat,
+    required this.long,
   });
   @override
   Widget build(BuildContext context) {
@@ -76,19 +78,31 @@ class QuoteCard extends StatelessWidget {
                           size: Size.fromRadius(
                             MediaQuery.of(context).size.width,
                           ),
-                          child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(Icons.format_quote),
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child: Icon(Icons.format_quote)),
                                   Text(
                                     quote.split("-")[0],
-                                    style: const TextStyle(fontSize: 25),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                    ),
                                   ),
-                                  Text(
-                                    "-${quote.split("-").last}",
-                                    style: const TextStyle(fontSize: 12),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: Text(
+                                      "-${quote.split("-").last}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w100),
+                                    ),
                                   ),
                                 ]),
                           ),
@@ -111,7 +125,9 @@ class QuoteCard extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const OtherUserProfile()),
+                                              OtherUserProfile(
+                                                uid: authorUid,
+                                              )),
                                     );
                                   }
                                   ;
@@ -158,6 +174,8 @@ class QuoteCard extends StatelessWidget {
                                 weatherCode,
                                 temprature,
                                 location,
+                                lat: lat,
+                                lon: long,
                               ),
                             )
                           ],
@@ -168,40 +186,6 @@ class QuoteCard extends StatelessWidget {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class WeatherInfo extends StatelessWidget {
-  final num weather_code;
-  final num temperature;
-  final String city;
-  WeatherInfo(this.weather_code, this.temperature, this.city, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "$temperature °C",
-              style: const TextStyle(color: Colors.white, fontSize: 22),
-            ),
-            Text(
-              city,
-              style: const TextStyle(color: Colors.white60, fontSize: 18),
-            )
-          ],
-        ),
-        SvgPicture.asset(
-          weatherCodes[weather_code]!,
-          height: 38,
-        )
       ],
     );
   }

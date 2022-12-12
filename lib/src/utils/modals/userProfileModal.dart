@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:weather_share/src/models/models.dart';
 
 import '../utils.dart';
 
-void userProfileModal(context) {
+void userProfileModal(context, User user) {
   showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
@@ -38,9 +39,12 @@ void userProfileModal(context) {
                 ],
               ),
             ),
-            child: const CircleAvatar(
+            child: CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'),
+                user.profileURL.isEmpty
+                    ? "https://cdn.pixabay.com/photo/2016/09/28/02/14/user-1699635_960_720.png"
+                    : user.profileURL,
+              ),
               radius: 50,
             ),
           ),

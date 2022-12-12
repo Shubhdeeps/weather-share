@@ -1,10 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weather_share/src/utils/imageCard/weatherInfo.dart';
 
 import '../../screens/otherUsersProfile.dart';
-import '../../services/logical/weatherCodeToIcon.dart';
 import '../utils.dart';
 
 class ImageCard extends StatelessWidget {
@@ -16,6 +15,9 @@ class ImageCard extends StatelessWidget {
   final String location;
   final num weatherCode;
   final bool isInsideUserProfile;
+  final String authorUid;
+  final num lat;
+  final num long;
   const ImageCard({
     super.key,
     required this.imageURL,
@@ -26,6 +28,9 @@ class ImageCard extends StatelessWidget {
     required this.location,
     required this.weatherCode,
     required this.isInsideUserProfile,
+    required this.authorUid,
+    required this.lat,
+    required this.long,
   });
 
   @override
@@ -95,7 +100,9 @@ class ImageCard extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const OtherUserProfile()),
+                                              OtherUserProfile(
+                                                uid: authorUid,
+                                              )),
                                     );
                                   }
                                   ;
@@ -142,6 +149,8 @@ class ImageCard extends StatelessWidget {
                                 weatherCode,
                                 temprature,
                                 location,
+                                lat: lat,
+                                lon: long,
                               ),
                             )
                           ],
@@ -152,40 +161,6 @@ class ImageCard extends StatelessWidget {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class WeatherInfo extends StatelessWidget {
-  final num weather_code;
-  final num temperature;
-  final String city;
-  WeatherInfo(this.weather_code, this.temperature, this.city, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "$temperature °C",
-              style: const TextStyle(color: Colors.white, fontSize: 22),
-            ),
-            Text(
-              city,
-              style: const TextStyle(color: Colors.white60, fontSize: 18),
-            )
-          ],
-        ),
-        SvgPicture.asset(
-          weatherCodes[weather_code]!,
-          height: 38,
-        )
       ],
     );
   }

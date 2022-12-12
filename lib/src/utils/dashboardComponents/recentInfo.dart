@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_share/src/utils/modals/weatherForcastModal.dart';
 
 import '../utils.dart';
 
 class RecentInfo extends StatelessWidget {
-  const RecentInfo({super.key});
+  final Position currentUserPosition;
+  const RecentInfo({super.key, required this.currentUserPosition});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +39,8 @@ class RecentInfo extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                weatherForecaseModal(context);
+                weatherForecaseModal(context, currentUserPosition.latitude,
+                    currentUserPosition.longitude, "my city");
               },
               icon: const IconTheme(
                 data: IconThemeData(color: Colors.white60),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:weather_share/src/utils/posts/postsFeed.dart';
 import '../models/models.dart';
 import '../services/cloud/getAllPosts.dart';
 import '../utils/utils.dart';
@@ -69,47 +70,15 @@ class _FeedState extends State<Feed> {
       showChildOpacityTransition: true,
       springAnimationDurationInMilliseconds: 50,
       onRefresh: getFeedData,
-      child: ListView.builder(
-          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-          controller: controller,
-          itemCount: _posts.length + 1,
-          itemBuilder: (BuildContext context, int index) {
-            if (_error.isNotEmpty) {
-              return Center(
-                child: Text(
-                  _error,
-                  style: const TextStyle(color: Colors.white, fontSize: 22),
-                ),
-              );
-            }
-            if (index < _posts.length) {
-              final item = _posts[index];
-              if (index == 0) {
-                return Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                      child: RecentInfo(),
-                    ),
-                    item.getPostContainer()
-                  ],
-                );
-              }
-              return item.getPostContainer();
-            } else {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 40),
-                child: Center(
-                  child: hasMore
-                      ? const CircularProgressIndicator()
-                      : const Text(
-                          "No more posts to load!",
-                          style: TextStyle(color: Colors.white, fontSize: 22),
-                        ),
-                ),
-              );
-            }
-          }),
+      child: PostFeed(
+        controller: controller,
+        posts: _posts,
+        error: _error,
+        hasMore: hasMore,
+        child: RecentInfo(
+          currentUserPosition: widget.currentUserPosition,
+        ),
+      ),
     );
   }
 }

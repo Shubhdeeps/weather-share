@@ -11,6 +11,6 @@ Future<dynamic> getWeatherUsingLatLong(double lat, double long) async {
 Future<dynamic> getWeatherForecaseUsingLatLong(double lat, double long) async {
   final userTimeZoneName = DateTime.now().timeZoneName;
   final res = await http.get(Uri.parse(
-      'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&daily=weathercode&timezone=$userTimeZoneName'));
+      'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&daily=weathercode&daily=temperature_2m_max&daily=temperature_2m_min&timezone=$userTimeZoneName'));
   return jsonDecode(res.body);
 }
