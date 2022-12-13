@@ -12,8 +12,11 @@ class HomePage extends StatefulWidget {
   Function pageValue;
   PageController pageController;
   final String currentUserId;
+  final Function currentUserPosition;
   HomePage(this.pageValue, this.pageController,
-      {super.key, required this.currentUserId});
+      {super.key,
+      required this.currentUserId,
+      required this.currentUserPosition});
 
   @override
   State<HomePage> createState() => _HomePage();
@@ -21,27 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   bool firstLoad = true;
-  Future<Position> currentUserPosition(context) async {
-    try {
-      final location = await getCurrentLocation();
-      // update the user location every time he opens the application.
-      final userCurrentLocation = await getUserLocationUsingLatLong(
-          location.latitude, location.longitude);
-      profileRef.doc(widget.currentUserId).update({
-        "location": userCurrentLocation["address"]["city"],
-      });
-      if (firstLoad) {
-        Navigator.of(context, rootNavigator: true).pop('dialog');
-      }
-      setState(() {
-        firstLoad = false;
-      });
-
-      return location;
-    } catch (e) {
-      return Future.error(e.toString());
-    }
-  }
+  late Future<Position> currentPositionFuture = widget.currentUserPosition();
 
   @override
   void setState(fn) {
@@ -94,8 +77,8 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: currentUserPosition(context),
-      builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+      future: currentPositionFuture,
+      builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return PageView(
             controller: widget.pageController,
@@ -120,14 +103,14 @@ class _HomePage extends State<HomePage> {
             child: Text(snapshot.error.toString()),
           );
         } else {
-          Future.delayed(Duration.zero, () {
-            showDialog(
-              context: context,
-              builder: (_) => ShowLoader(),
-              barrierDismissible: false,
-            );
-          });
-          return Container();
+          // Future.delayed(Duration.zero, () {
+          //   showDialog(
+          //     context: context,
+          //     builder: (_) => ShowLoader(),
+          //     barrierDismissible: false,
+          //   );
+          // });
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

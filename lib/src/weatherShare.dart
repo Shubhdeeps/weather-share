@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_share/src/pages/homepages.dart';
+import 'package:weather_share/src/services/api/getLocationUsingLatLong.dart';
 import 'package:weather_share/src/services/firebaseConfig.dart';
+import 'package:weather_share/src/services/logical/getDeviceGeoLocation.dart';
 import 'package:weather_share/src/utils/utils.dart';
 
 class WeatherShare extends StatefulWidget {
@@ -18,6 +21,28 @@ class _WeatherShareState extends State<WeatherShare> {
     initialPage: 0,
     keepPage: true,
   );
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  Future<Position> currentUserPosition() async {
+    print("RUNNING UPDATE");
+    try {
+      final location = await getCurrentLocation();
+      // update the user location every time he opens the application.
+      final userCurrentLocation = await getUserLocationUsingLatLong(
+          location.latitude, location.longitude);
+      profileRef.doc(widget.currentUserId).update({
+        "location": userCurrentLocation["address"]["city"],
+      });
+      return location;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 
   Future<void> _onItemTapped(int index) async {
     Future.delayed(Duration.zero, () {
@@ -68,6 +93,7 @@ class _WeatherShareState extends State<WeatherShare> {
             _onItemTapped,
             pageController,
             currentUserId: widget.currentUserId,
+            currentUserPosition: currentUserPosition,
           ),
         ),
       ),
