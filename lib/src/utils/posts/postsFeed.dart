@@ -40,7 +40,7 @@ class PostFeed extends StatelessWidget {
                 ),
                 const Text(
                   "No posts yet!",
-                  style: TextStyle(color: Colors.white, fontSize: 28),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ]),
             );
@@ -67,7 +67,7 @@ class PostFeed extends StatelessWidget {
                     ? const CircularProgressIndicator()
                     : const Text(
                         "No more posts to load!",
-                        style: TextStyle(color: Colors.white, fontSize: 22),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
               ),
             );

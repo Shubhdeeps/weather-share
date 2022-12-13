@@ -12,28 +12,19 @@ class HomePage extends StatefulWidget {
   Function pageValue;
   PageController pageController;
   final String currentUserId;
+  final Function currentUserPosition;
   HomePage(this.pageValue, this.pageController,
-      {super.key, required this.currentUserId});
+      {super.key,
+      required this.currentUserId,
+      required this.currentUserPosition});
 
   @override
   State<HomePage> createState() => _HomePage();
 }
 
 class _HomePage extends State<HomePage> {
-  Future<Position> currentUserPosition() async {
-    try {
-      final location = await getCurrentLocation();
-      // update the user location every time he opens the application.
-      final userCurrentLocation = await getUserLocationUsingLatLong(
-          location.latitude, location.longitude);
-      profileRef.doc(widget.currentUserId).update({
-        "location": userCurrentLocation["address"]["city"],
-      });
-      return location;
-    } catch (e) {
-      return Future.error(e.toString());
-    }
-  }
+  bool firstLoad = true;
+  late Future<Position> currentPositionFuture = widget.currentUserPosition();
 
   @override
   void setState(fn) {
@@ -64,11 +55,30 @@ class _HomePage extends State<HomePage> {
     );
   }
 
+  AlertDialog ShowLoader() {
+    return AlertDialog(
+      content: Row(
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(
+            width: 40,
+          ),
+          Text(
+            "Loading...",
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      elevation: 24,
+      backgroundColor: themeColor["secondaryFG"],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: currentUserPosition(),
-      builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+      future: currentPositionFuture,
+      builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return PageView(
             controller: widget.pageController,
@@ -93,22 +103,14 @@ class _HomePage extends State<HomePage> {
             child: Text(snapshot.error.toString()),
           );
         } else {
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CircularProgressIndicator(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Fetching location...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ]);
+          // Future.delayed(Duration.zero, () {
+          //   showDialog(
+          //     context: context,
+          //     builder: (_) => ShowLoader(),
+          //     barrierDismissible: false,
+          //   );
+          // });
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

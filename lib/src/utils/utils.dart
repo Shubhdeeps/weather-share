@@ -23,4 +23,3 @@ export 'imageCard/imageCard.dart';
 
 //modal
 export 'modals/userProfileModal.dart';
-export 'modals/sortByModal.dart';
